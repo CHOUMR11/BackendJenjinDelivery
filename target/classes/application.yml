@@ -1,0 +1,73 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: jenjon-delivery
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/jenjon_delivery}
+    username: ${DB_USERNAME:jenjon}
+    password: ${DB_PASSWORD:jenjon}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: ${DDL_AUTO:update}
+    show-sql: ${SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: public
+
+  jackson:
+    default-property-inclusion: non_null
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+jenjon:
+  bootstrap:
+    # Compte Admin créé automatiquement au premier démarrage (s'il n'existe pas déjà).
+    # À CHANGER en production via ces variables d'environnement.
+    admin-telephone: ${ADMIN_BOOTSTRAP_TELEPHONE:20000000}
+    admin-password: ${ADMIN_BOOTSTRAP_PASSWORD:ChangeMoiImmediatement123!}
+  security:
+    # IMPORTANT : en production, définir JWT_SECRET (>= 32 caractères) en variable d'environnement.
+    jwt-secret: ${JWT_SECRET:CHANGE_ME_super_secret_key_min_32_characters_long_please}
+    jwt-expiration-ms: ${JWT_EXPIRATION_MS:86400000} # 24h
+  cors:
+    # Liste d'origines autorisées, séparées par des virgules. "*" uniquement en dev.
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:8081}
+  notification:
+    email:
+      enabled: ${NOTIF_EMAIL_ENABLED:true}
+      from: ${NOTIF_EMAIL_FROM:no-reply@jenjondelivery.tn}
+    sms:
+      enabled: ${NOTIF_SMS_ENABLED:false}
+      provider-api-key: ${SMS_PROVIDER_API_KEY:}
+      provider-url: ${SMS_PROVIDER_URL:}
+    push:
+      enabled: ${NOTIF_PUSH_ENABLED:false}
+      firebase-credentials-path: ${FCM_CREDENTIALS_PATH:}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

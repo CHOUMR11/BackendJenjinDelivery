@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: 148mm 210mm; margin: 0; }
+  * { box-sizing: border-box; font-family: "DejaVu Sans", Arial, sans-serif; }
+  body { margin: 0; padding: 0; }
+
+  .label { width: 148mm; height: 210mm; padding: 4mm; }
+
+  .header { display: flex; justify-content: space-between; align-items: flex-start;
+    border-bottom: 2px solid #000; padding-bottom: 2mm; margin-bottom: 2mm; }
+  .header .brand { font-size: 15pt; font-weight: bold; }
+  .header .brand .sub { display:block; font-size: 7pt; font-weight: normal; color:#555; }
+  .header .agence-code { text-align: right; }
+  .header .agence-code .num { font-size: 22pt; font-weight: bold; line-height: 1; }
+  .header .agence-code .ville { font-size: 9pt; }
+
+  .barcode-block { text-align: center; margin: 2mm 0; }
+  .barcode-block img { height: 14mm; }
+  .barcode-block .code-text { font-size: 8pt; letter-spacing: 2px; margin-top: 0.5mm; }
+
+  .bl-title { text-align:center; font-size: 10pt; font-weight: bold; margin: 1.5mm 0; }
+  .bl-num { text-align:center; font-size: 9pt; margin-bottom: 2mm; }
+
+  .trajet { text-align:center; font-size: 8.5pt; background:#f2f2f2; padding: 1mm;
+    margin-bottom: 2mm; border: 0.5pt solid #999; }
+
+  .type-badge { display:inline-block; font-size: 8pt; font-weight:bold; padding: 0.5mm 2mm;
+    border-radius: 3mm; color:#fff; margin-left: 2mm; background:{{TYPE_COLOR}}; }
+
+  table.box { width: 100%; border-collapse: collapse; margin-bottom: 2mm; font-size: 8pt; }
+  table.box td { border: 0.5pt solid #000; padding: 1mm 1.5mm; vertical-align: top; }
+  table.box td.label-cell { font-weight: bold; width: 28mm; background:#fafafa; }
+
+  table.desig { width:100%; border-collapse: collapse; font-size: 8pt; margin-bottom: 2mm; }
+  table.desig th, table.desig td { border: 0.5pt solid #000; padding: 1mm; text-align:center; }
+  table.desig th { background:#1F3864; color:#fff; font-size:7.5pt; }
+
+  .total-row { display:flex; justify-content: space-between; font-size: 9pt; font-weight:bold;
+    border-top: 1pt solid #000; padding-top: 1.5mm; margin-bottom: 2mm; }
+  .paiement { text-align:center; font-size: 8pt; font-style: italic; margin-bottom: 2mm; }
+
+  .mention-ouverture { text-align:center; font-size: 8.5pt; font-weight: bold;
+    border: 1pt dashed #000; padding: 1.5mm; margin-top: 2mm; }
+
+  .footer-note { text-align:center; font-size: 6.5pt; color:#777; margin-top: 3mm; }
+
+  .volet-title { text-align:center; font-size: 10pt; font-weight:bold; margin: 3mm 0 2mm;
+    padding-top: 2mm; border-top: 2px dashed #000; }
+  table.volet { width:100%; border-collapse: collapse; font-size: 8pt; margin-bottom: 2mm; }
+  table.volet td { border: 0.5pt solid #000; padding: 1.5mm; vertical-align: top; width:50%; }
+  table.volet .head { font-weight:bold; background:#f2f2f2; text-align:center; }
+</style>
+</head>
+<body>
+<div class="label">
+  <div class="header">
+    <div class="brand">Jenjon Delivery<span class="sub">Bordereau d'envoi</span></div>
+    <div class="agence-code">
+      <div class="num">{{AGENCE_CODE}}</div>
+      <div class="ville">{{AGENCE_VILLE}}</div>
+    </div>
+  </div>
+
+  <div class="barcode-block">
+    <img src="data:image/png;base64,{{BARCODE_BASE64}}">
+    <div class="code-text">{{CODE_BARRES}}</div>
+  </div>
+
+  <div class="bl-title">BON DE LIVRAISON N° <span class="type-badge">{{TYPE_LABEL}}</span></div>
+  <div class="bl-num">{{NUMERO_BL}} &nbsp;|&nbsp; Date BL : {{DATE_BL}}</div>
+
+  <div class="trajet">{{AGENCE_ORIGINE}} &nbsp;&gt;&gt;&mdash; dispatch &mdash;&gt;&gt;&nbsp; {{AGENCE_DESTINATION}}</div>
+
+  <table class="box">
+    <tr>
+      <td class="label-cell">Expéditeur</td>
+      <td>
+        Nom : {{EXP_NOM}}<br>
+        Adresse : {{EXP_ADRESSE}}<br>
+        Tél : {{EXP_TEL}} &nbsp;|&nbsp; M/F : {{EXP_MF}}
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">Destinataire</td>
+      <td>
+        Nom : {{DEST_NOM}}<br>
+        Adresse : {{DEST_ADRESSE}}<br>
+        Tél : {{DEST_TEL}}
+      </td>
+    </tr>
+  </table>
+
+  <table class="desig">
+    <tr><th>Désignation</th><th>Qté</th><th>Montant</th></tr>
+    <tr><td>{{DESIGNATION}}</td><td>{{QUANTITE}}</td><td>{{MONTANT}} DT</td></tr>
+  </table>
+
+  <div class="total-row"><span>TOTAL EN TTC</span><span>{{MONTANT}} DT</span></div>
+  <div class="paiement">Espèces seulement — Contre-remboursement</div>
+
+  <div class="mention-ouverture">Ouvrir le colis : &emsp; {{OUVERTURE_OUI}} Oui &emsp; {{OUVERTURE_NON}} Non</div>
+
+  <div class="volet-title">BON DE LIVRAISON N° {{NUMERO_BL}} — Volet client</div>
+  <table class="volet">
+    <tr><td class="head">Fournisseur</td><td class="head">Client</td></tr>
+    <tr>
+      <td>
+        {{EXP_NOM}}<br>{{EXP_ADRESSE}}<br>Tél : {{EXP_TEL}}<br>M/F : {{EXP_MF}}
+      </td>
+      <td>
+        Client : {{DEST_NOM}}<br>Adresse : {{DEST_ADRESSE}}<br>Téléphone : {{DEST_TEL}}
+      </td>
+    </tr>
+  </table>
+  <table class="desig">
+    <tr><th>Désignation</th><th>Qté</th><th>Montant Total</th></tr>
+    <tr><td>{{DESIGNATION}}</td><td>{{QUANTITE}}</td><td>{{MONTANT}} DT</td></tr>
+  </table>
+  <div class="total-row"><span>TOTAL EN TTC</span><span>{{MONTANT}} DT</span></div>
+
+  <div class="footer-note">Document généré automatiquement par Jenjon Delivery</div>
+</div>
+</body>
+</html>
